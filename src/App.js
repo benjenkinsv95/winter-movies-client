@@ -69,23 +69,38 @@ class App extends Component {
   }
 
   render () {
+    // destructure (extract) the msgAlerts and user state
     const { msgAlerts, user } = this.state
 
     return (
       <Fragment>
+        {/* This header is the top navigation bar with our links */}
         <Header user={user} />
+        {/* Take each message alert and map it into an AutoDismissAlert element */}
         {msgAlerts.map(msgAlert => (
+          // An AutoDismissAlert shows a message (alert) and then automatically disappears
           <AutoDismissAlert
+            /* React uses the key to identify the element when it is inserted,
+              updated, or removed */
             key={msgAlert.id}
+
+            /* The msgAlert needs the heading, variant, and message to show for the alert */
             heading={msgAlert.heading}
             variant={msgAlert.variant}
             message={msgAlert.message}
+
+            /* The msgAlert needs the msgAlert's id and deleteAlert functions to
+               remove the msgAlert after 5 seconds */
             id={msgAlert.id}
             deleteAlert={this.deleteAlert}
           />
         ))}
         <main className="container">
+          {/* Use a normal Route component so we can see SignUp whenever we aren't logged in */}
           <Route path='/sign-up' render={() => (
+            // Pass the SignUp component the `msgAlert` so it can tell us if we
+            // signed up successfully or not.
+            // We also pass the setUser function so we can be automatically signed in
             <SignUp msgAlert={this.msgAlert} setUser={this.setUser} />
           )} />
           <Route path='/sign-in' render={() => (
